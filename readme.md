@@ -18,6 +18,11 @@ conda create --name vccourse python=3.8.18
 conda activate vccourse
 ```
 
+#### Run env:
+```
+jupyter-lab
+```
+
 #### Deactivate env:
 ```
 conda deactivate
