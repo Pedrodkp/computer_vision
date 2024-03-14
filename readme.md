@@ -5,17 +5,17 @@ The course sugest really old libs, i will try the course with the new ones and u
 #### Start: 
 - Install mini conda   
 ```
-eval "$(/media/upiara/LinuxFiles/Apps/conda/bin/conda shell.bash hook)"
+eval "$(/mnt/LinuxFiles/Apps/conda/bin/conda shell.bash hook)"
 ```
 
 #### Create env:
 ```
-conda create --name vccourse python=3.8.18
+conda create --name computer_vision python=3.8.18
 ```
 
 #### Activate env:
 ```
-conda activate vccourse
+conda activate computer_vision
 ```
 
 #### Run env:
@@ -49,7 +49,7 @@ conda env export > environment.yml
 
 #### Import (creating)
 ```
-conda env create --name vccourse -f environment.yml
+conda env create --name computer_vision -f environment.yml
 ```
 
 ## Images
