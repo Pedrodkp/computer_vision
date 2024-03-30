@@ -1,3 +1,17 @@
+# Basics
+
+- Bias, Value set in a network to have no zero in output (input in all ZEROs ou result of SUM).
+- Step Fcuntions, How the output will be returned.
+- Cost Functions, Functions to set how neurons acctually learn.
+- Gradient Descent, Algoritims of learning process itself (also represented by one formula with "finds" the minimum value of a function). 
+- Backpropagation, Used to calculate the error contribution of each neuron after a batch of data is processed.
+
+# Keras
+
+- Hot Encoding, Just a biding to zero/1, ex in mist: 4 became 0,0,0,0,1,0,0,0,0,0 and 8 became 0,0,0,0,0,0,0,0,1,0.
+
+# Um bom fundamento:
+
 Máiron Chaves
 
 ** Seja paciente, explore os dados com calma, e no final use (ou tente usar) modelos preditivos tradicionais **
