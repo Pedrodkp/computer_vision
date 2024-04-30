@@ -8,18 +8,22 @@ conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvi
 pip install -r requirements.txt
 ```
 
-## Yolo v7
+This --source 0 or --source="0", is webcam in detection context, but GPU index in learning context.
 
-### Detection
+## Yolo v7
 
 https://github.com/pHidayatullah/yolov7
 
---source 0, is webcam  
+### Detection
+
 weights are download from: https://github.com/pHidayatullah/yolov7
 ```
 python detect.py --weights yolov7.pt --source inference/images/horses.jpg
+
 python detect.py --weights yolov7.pt --conf-thres 0.5 --img-size 640 --source inference/images --view-img --save-txt
+
 python detect.py --weights yolov7.pt --conf-thres 0.5 --img-size 640 --source inference/road.mp4 --view-img --save-txt
+
 python detect.py --weights yolov7.pt --conf-thres 0.5 --img-size 640 --source 0
 ```
 
@@ -53,8 +57,7 @@ python detect.py --weights yolov7.pt --conf-thres 0.5 --img-size 640 --source 0
 | --weights      | Initial Weights                                 | --weights yolov7_training.pt      |
 | --name         | Model Name                                      | --name yolov7-face-mask           |
 | --hyp          | Hyperparameter                                  | --hyp data\hyp.scratch.custom.yaml |
-| --epochs       | The number of times the learning algorithm will| --epochs 300                      |
-|                | work to process the entire dataset.            |                                    |
+| --epochs       | The number of times the learning algorithm will work to process the entire dataset. | --epochs 300                      |
 
 
 ```
@@ -65,12 +68,17 @@ python train.py --workers 0 --batch-size 4 --device 0 --data /mnt/LinuxFiles/Stu
 
 https://github.com/ultralytics/ultralytics
 
---source="0", is webcam
+## Detection
+
 ```
 yolo detect predict model=yolov8l.pt source='https://ultralytics.com/images/bus.jpg'
+
 yolo detect predict model=yolov8l.pt source="inference/images/horses.jpg" save=True conf=0.5 show=True
+
 yolo detect predict model=yolov8l.pt source="inference/images" save=True conf=0.5 show=True line_thickness=1
+
 yolo detect predict model=yolov8l.pt source="inference/road.mp4" save=True conf=0.5 show=True
+
 yolo detect predict model=yolov8l.pt source="0" save=True show=True
 ```
 
@@ -84,6 +92,48 @@ yolo detect predict model=yolov8l.pt source="0" save=True show=True
 | show             | Display Results                 | False                  | show=True                  |
 | save_txt         | Save detection result to file   | False                  | save_txt=True              |
 | line_thickness   | Bounding boxes thickness        | 3                      | line_thickness=3           |
+
+### Learning
+
+1. Split database with the scripts split_dataset.py
+2. Make a file like bellow and add to ultralytics/data:
+```
+# Dataset Path
+path: /mnt/LinuxFiles/Study/computer_vision/yolo/datasets/face_mask_dataset
+
+train: images/train # relative to path
+val: images/val # relative to path
+test: images/test # relative to path
+
+# Class Names
+names: ["Mask", "No Mask", "Bad Mask"]
+```
+3. Trainning:
+
+| Argument     | Description                                       | Default       | Example                |
+|--------------|---------------------------------------------------|---------------|------------------------|
+| model        | The model that we want to use                    | -             | model=yolov8l.pt      |
+| data         | Data file                                         | -             | data=data/face_mask.yaml |
+| imgsz        | Image Size                                        | 640           | imgsz=640              |
+| workers      | The number of processes that generate batches in parallel | 8         | workers=8              |
+| device       | Device to run training                            | -             | device=0, device=cpu   |
+| batch        | The number of images processed before updating the model | 16        | batch=16               |
+| epochs       | The number of times the learning algorithm will work to process the entire dataset | 100 | epochs=100           |
+| patience     | Epochs to wait for no observable improvement for early stopping of training | 50 | patience=50          |
+
+```
+yolo detect train model=yolov8l.pt data=data/face_mask.yaml imgsz=640 workers=4 batch=8 device=0 epochs=300 patience=50 name=yolov8_face_mask
+```
+
+4. Restart (if stop by ctrl+c):
+```
+yolo detect train model=runs/detect/yolov8_face_mask/weights/last.pt data=data/face_mask.yaml resume=True
+```
+
+5. Use:
+```
+yolo detect predict model=runs/detect/yolov8_face_mask/weights/best.pt source=0
+```
 
 ## Split database
 
