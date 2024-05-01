@@ -64,11 +64,32 @@ python detect.py --weights yolov7.pt --conf-thres 0.5 --img-size 640 --source 0
 python train.py --workers 0 --batch-size 4 --device 0 --data /mnt/LinuxFiles/Study/computer_vision/yolo/datasets/face_mask_dataset/face_mask.yaml --img 640 640 --cfg /mnt/LinuxFiles/Study/computer_vision/yolo/datasets/face_mask_dataset/yolov7-face_mask.yaml --weights yolov7_training.pt --name yolov7-face-mask --hyp data/hyp.scratch.custom.yaml --epochs 300
 ```
 
+### Accuracy
+
+| Argument     | Description                      | Example                     |
+|--------------|----------------------------------|-----------------------------|
+| --weights    | YOLOv7 Weights                   | --weights best.pt           |
+| --batch-size | The number of images processed at one time | --batch-size 4        |
+| --device     | CUDA device                      | --device 0                  |
+| --data       | Data file                        | --data data\face_mask.yaml |
+| --img        | Image Size                       | --img 640                   |
+| --conf-thres | Object confidence threshold      | --conf-thres 0.01           |
+| --iou        | IOU threshold                    | --iou 0.65                  |
+| --name       | Folder Name                      | --name yolov7-face-mask-val |
+| --task       | Task                             | --task val                  |
+
+
+```
+python test.py --weights runs/train/yolov7-face-mask2/weights/best.pt --batch-size 2 --device 0 --data data/face_mask.yaml --img 640 --conf-thres 0.01 --iou 0.5 --name yolov7-face-mask-val --task val
+
+python test.py --weights runs/train/yolov7-face-mask2/weights/best.pt --batch-size 2 --device 0 --data data/face_mask.yaml --img 640 --conf-thres 0.01 --iou 0.5 --name yolov7-face-mask-test --task test
+```
+
 ## Yolo v8
 
 https://github.com/ultralytics/ultralytics
 
-## Detection
+### Detection
 
 ```
 yolo detect predict model=yolov8l.pt source='https://ultralytics.com/images/bus.jpg'
@@ -106,7 +127,10 @@ val: images/val # relative to path
 test: images/test # relative to path
 
 # Class Names
-names: ["Mask", "No Mask", "Bad Mask"]
+names: 
+    0: "Mask"
+    1: "No Mask"
+    2: "Bad Mask"
 ```
 3. Trainning:
 
@@ -133,6 +157,24 @@ yolo detect train model=runs/detect/yolov8_face_mask/weights/last.pt data=data/f
 5. Use:
 ```
 yolo detect predict model=runs/detect/yolov8_face_mask/weights/best.pt source=0
+```
+
+### Accuracy
+
+| Argument     | Description                           | Default        | Example             |
+|--------------|---------------------------------------|----------------|---------------------|
+| model        | YOLOv8 Model                         | -              | model=yolov8l.pt   |
+| data         | Data file                             | -              | data=data/face_mask.yaml |
+| device       | Device to run the mAP calculation    | -              | device=0, device=cpu |
+| conf         | Object confidence threshold           | 0.001          | conf=0.001          |
+| iou          | IOU threshold                         | 0.6            | iou=0.6             |
+| name         | Folder name                           | -              | name=face_mask_val  |
+| split        | Dataset split to use for mAP calculation | val          | split=val           |
+
+```
+yolo detect val model=/mnt/LinuxFiles/Study/computer_vision/yolo/ultralytics/runs/detect/yolov8_face_mask/weights/best.pt data=data/face_mask.yaml device=0 conf=0.001 iou=0.5 name=face_mask_val split=val
+
+yolo detect val model=/mnt/LinuxFiles/Study/computer_vision/yolo/ultralytics/runs/detect/yolov8_face_mask/weights/best.pt data=data/face_mask.yaml device=0 conf=0.001 iou=0.5 name=face_mask_test split=test
 ```
 
 ## Split database
