@@ -85,7 +85,7 @@ python test.py --weights runs/train/yolov7-face-mask2/weights/best.pt --batch-si
 python test.py --weights runs/train/yolov7-face-mask2/weights/best.pt --batch-size 2 --device 0 --data data/face_mask.yaml --img 640 --conf-thres 0.01 --iou 0.5 --name yolov7-face-mask-test --task test
 ```
 
-## Yolo v8
+## Yolo v8 (ultralytics)
 
 https://github.com/ultralytics/ultralytics
 
@@ -180,6 +180,7 @@ yolo detect val model=/mnt/LinuxFiles/Study/computer_vision/yolo/ultralytics/run
 ## Split database
 
 Images should already have the labels for YOLO with the images in the directory.
+#### Important: The origin dataset, should have the images with the labels in the same folder with as passed at --folder argument.
 ```
 python split_dataset.py --folder ./datasets/face_mask --train 80 --validation 10 --test 10 --dest ./datasets/face_mask_dataset
 ```
