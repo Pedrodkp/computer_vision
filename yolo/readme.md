@@ -36,7 +36,7 @@ python detect.py --weights yolov7.pt --conf-thres 0.5 --img-size 640 --source 0
 | --view-img   | Display Results               | -                 | --view-img              |
 | --save-txt   | Save detection result to file | -                 | --save-txt              |
 
-### Learning
+#### Learning Detection
 
 1. Split database with the scripts split_dataset.py
 2. Make a file from > https://github.com/pHidayatullah/yolov7/blob/main/data/coco.yaml
@@ -64,7 +64,7 @@ python detect.py --weights yolov7.pt --conf-thres 0.5 --img-size 640 --source 0
 python train.py --workers 0 --batch-size 4 --device 0 --data /mnt/LinuxFiles/Study/computer_vision/yolo/datasets/face_mask_dataset/face_mask.yaml --img 640 640 --cfg /mnt/LinuxFiles/Study/computer_vision/yolo/datasets/face_mask_dataset/yolov7-face_mask.yaml --weights yolov7_training.pt --name yolov7-face-mask --hyp data/hyp.scratch.custom.yaml --epochs 300
 ```
 
-### Accuracy
+#### Accuracy Detection
 
 | Argument     | Description                      | Example                     |
 |--------------|----------------------------------|-----------------------------|
@@ -118,7 +118,7 @@ yolo detect predict model=yolov8l.pt source="0" save=True show=True
 | save_txt         | Save detection result to file   | False                  | save_txt=True              |
 | line_thickness   | Bounding boxes thickness        | 3                      | line_thickness=3           |
 
-### Learning
+#### Learning Detection
 
 1. Split database with the scripts split_dataset.py
 2. Make a file like bellow and add to ultralytics/data:
@@ -163,7 +163,7 @@ yolo detect train model=runs/detect/yolov8_face_mask/weights/last.pt data=data/f
 yolo detect predict model=runs/detect/yolov8_face_mask/weights/best.pt source=0
 ```
 
-### Accuracy
+#### Accuracy Detection
 
 | Argument     | Description                           | Default        | Example             |
 |--------------|---------------------------------------|----------------|---------------------|
@@ -190,6 +190,39 @@ yolo classify predict model=ultralytics/yolov8l-cls.pt source=examples/bee.png s
 yolo classify predict model=ultralytics/yolov8l-cls.pt source=examples/volleyball.mp4 show=True
 ```
 
+#### Learning Classify
+
+| Argument     | Description                                         | Default       | Example                        |
+|--------------|-----------------------------------------------------|---------------|--------------------------------|
+| model        | The model that we want to use                      | -             | model=yolov8l-cls.pt          |
+| data         | Dataset path                                       | -             | data=data/classify/weather_dataset |
+| imgsz        | Image Size                                         | 224           | imgsz=224                      |
+| workers      | The number of processes that generate batches in parallel | 8       | workers=8                      |
+| device       | Device to run training                             | -             | device=0, device=cpu           |
+| batch        | The number of images processed before updating the model | 16      | batch=16                       |
+| epochs       | The number of times the learning algorithm will work to process the entire dataset | 100 | epochs=100                   |
+| patience     | Epochs to wait for no observable improvement for early stopping of training | 50 | patience=50                  |
+| name         | Folder Name                                        | -             | name=yolov8_weather           |
+| Argument | Description            | Default | Example                                         |
+| data     | Dataset path           | -       | data=D:\yolov8-gpu\data\classify\weather_dataset |
+| imgsz    | Image Size             | 224     | imgsz=224                                       |
+
+```
+yolo classify train model=ultralytics/yolov8l-cls.pt data=datasets/weather_dataset imgsz=224 device=0 workers=2 batch=16 epochs=100 patience=50 name=yolov8_weather_classification
+```
+
+If stoped a tranning, can continue this way:
+```
+yolo classify train model=runs/classify/yolov8_weather_classification/weights/last.pt resume=True
+```
+
+Using
+```
+yolo classify predict model=runs/classify/yolov8_weather_classification/weights/best.pt source=datasets/test/weather.png save=True
+
+yolo classify predict model=runs/classify/yolov8_weather_classification/weights/best.pt source=datasets/test/weather-video.mp4 save=True show=True
+```
+
 ### Segmentation
 
 It will make the same as detection, but using segmentation like painting the objects (need segmentation model)
@@ -206,7 +239,7 @@ It will track the objects in videos
 yolo track model=ultralytics/yolov8l.pt source="datasets/test/road.mp4" show=True
 ```
 
-#### Tracking + Segmentation model
+#### Tracking + Segmentation
 
 It will track the objects in videos using segmentation model
 ```
@@ -215,9 +248,36 @@ yolo track model=ultralytics/yolov8l-seg.pt source="datasets/test/road.mp4" show
 
 ## Split database
 
+### One class with labelling
+
 Images should already have the labels for YOLO with the images in the directory.
 #### Important: The origin dataset, should have the images with the labels in the same folder with as passed at --folder argument.
 ```
 python split_dataset.py --folder ./datasets/face_mask --train 80 --validation 10 --test 10 --dest ./datasets/face_mask_dataset
 ```
 
+### Multiple classes in folders (only images, no labelling)
+
+The origin dataset, should have the images in folders with represents the classes.
+```
+python split_dataset_class.py --folder ./datasets/weather --train 80 --validation 10 --test 10 --dest ./datasets/weather_dataset
+```
+
+#### Validate images
+
+There is a problem with small bit depths (color depth) when training because there is no eough resolution of color, it should be at least 24 bits.
+
+https://pt.wikipedia.org/wiki/Profundidade_de_cor
+
+So we need remove this images, the script will create a folder unused_image along the directory of its had runned.
+```
+python check_images.py --src ./datasets/weather_dataset
+```
+
+### Visual tensorboard
+
+This can be used for stopped tranning and also finished tranning.
+
+```
+tensorboard --logdir runs\classify\yolov8_weather_classification
+```
