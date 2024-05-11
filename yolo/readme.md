@@ -85,6 +85,10 @@ python test.py --weights runs/train/yolov7-face-mask2/weights/best.pt --batch-si
 python test.py --weights runs/train/yolov7-face-mask2/weights/best.pt --batch-size 2 --device 0 --data data/face_mask.yaml --img 640 --conf-thres 0.01 --iou 0.5 --name yolov7-face-mask-test --task test
 ```
 
+### Classify
+
+Don't care to user v7 for this, because is not native. Prefer use v8.
+
 ## Yolo v8 (ultralytics)
 
 https://github.com/ultralytics/ultralytics
@@ -177,6 +181,31 @@ yolo detect val model=/mnt/LinuxFiles/Study/computer_vision/yolo/ultralytics/run
 yolo detect val model=/mnt/LinuxFiles/Study/computer_vision/yolo/ultralytics/runs/detect/yolov8_face_mask/weights/best.pt data=data/face_mask.yaml device=0 conf=0.001 iou=0.5 name=face_mask_test split=test
 ```
 
+### Classify
+
+It will describe all elements in image (need classify model).
+```
+yolo classify predict model=ultralytics/yolov8l-cls.pt source=examples/bee.png save=True
+
+yolo classify predict model=ultralytics/yolov8l-cls.pt source=examples/volleyball.mp4 show=True
+```
+
+### Segmentation
+
+It will make the same as detection, but using segmentation like painting the objects (need segmentation model)
+```
+yolo segment predict model=ultralytics/yolov8l-seg.pt source=datasets/test/pose.png save=True
+
+yolo segment predict model=ultralytics/yolov8l-seg.pt source="0" show=True save=True
+```
+
+### Tracking
+
+It will track the objects in videos
+```
+yolo track model=
+```
+
 ## Split database
 
 Images should already have the labels for YOLO with the images in the directory.
@@ -184,5 +213,4 @@ Images should already have the labels for YOLO with the images in the directory.
 ```
 python split_dataset.py --folder ./datasets/face_mask --train 80 --validation 10 --test 10 --dest ./datasets/face_mask_dataset
 ```
-
 
