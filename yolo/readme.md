@@ -232,6 +232,22 @@ yolo segment predict model=ultralytics/yolov8l-seg.pt source=datasets/test/pose.
 yolo segment predict model=ultralytics/yolov8l-seg.pt source="0" show=True save=True
 ```
 
+#### Learning Segmentation
+
+Need create data.yaml like detection. The argments is also the same when creating a detection model.
+
+##### The segmentation model consumes more GPU memory than the detection model, because the model is bigger
+
+```
+yolo segment train model=ultralytics/yolov8l-seg.pt data=datasets/coffee_leaf.yaml imgsz=640 workers=0 batch=6 device=0 epochs=300 patience=50 name=yolov8_coffee_leaf
+```
+
+If stopped, start is the same way as detection
+
+```
+yolo segment train model=/mnt/LinuxFiles/Study/computer_vision/yolo/runs/segment/yolov8_coffee_leaf/weights/last.pt resume=True
+```
+
 ### Tracking
 
 It will track the objects in videos
@@ -276,8 +292,20 @@ python check_images.py --src ./datasets/weather_dataset
 
 ### Visual tensorboard
 
-This can be used for stopped tranning and also finished tranning.
+This can be used for stopped tranning and also finished tranning.  
+mAP graph, increase is better.  
+loss graph, decrease is better.
 
 ```
 tensorboard --logdir runs\classify\yolov8_weather_classification
 ```
+
+### Google Colab
+
+It is the same, but using Google Drive, is good to know:
+- Can run python and install dependencies.
+- Can use Google Drive é local file system.
+- Can run programs in python with export http ports, and have access to it, ex: visual tensorboar works there
+- Can show images like Jupyter Notebook (is acctually Jupyter with more power)
+- Can user GPU for faster trainning use
+- Perfect for prove of concept
