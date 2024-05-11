@@ -203,7 +203,14 @@ yolo segment predict model=ultralytics/yolov8l-seg.pt source="0" show=True save=
 
 It will track the objects in videos
 ```
-yolo track model=
+yolo track model=ultralytics/yolov8l.pt source="datasets/test/road.mp4" show=True
+```
+
+#### Tracking + Segmentation model
+
+It will track the objects in videos using segmentation model
+```
+yolo track model=ultralytics/yolov8l-seg.pt source="datasets/test/road.mp4" show=True save=True
 ```
 
 ## Split database
