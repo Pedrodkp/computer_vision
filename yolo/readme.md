@@ -1,6 +1,6 @@
 # YOLO
 
-# Install (the same for v7 and v8)
+# Install (the same for v7, v8 and v9)
 
 ```
 conda create --name yolo7gpu python=3.10
@@ -17,6 +17,10 @@ This --source 0 or --source="0", is webcam in detection context, but GPU index i
 ## Yolo v8 (ultralytics)
 
 [readme_v8.md](./readme_v8.md)
+
+## Yolo v9
+
+[readme_v9.md](./readme_v9.md)
 
 ## Split database
 

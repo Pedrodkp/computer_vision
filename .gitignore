@@ -1,6 +1,7 @@
 yolo/yolov7
 yolo/datasets
 yolo/ultralytics
+yolo/yolov9
 yolo/runs
 yolo/*.pt
 *.pyc
