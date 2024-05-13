@@ -76,3 +76,11 @@ python test.py --weights runs/train/yolov7-face-mask2/weights/best.pt --batch-si
 ### Classify
 
 Don't care to user v7 for this, because is not native. Prefer use v8.
+
+### EXTRA - Pose Estimation
+
+```
+python detect_pose.py --weights yolov7-w6-pose.pt --source=../datasets/test/pose.png --kpt-label --view-img
+
+python detect_pose.py --weights yolov7-w6-pose.pt --source=../datasets/test/pose-video.mp4 --kpt-label --view-img
+```
